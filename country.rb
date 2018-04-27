@@ -5,6 +5,7 @@ class Country
     @altitude = altitude
   end
 
+  ### Check if there are nil values in csv file
   def nation
     @nation.nil? ? "" : @nation
   end
