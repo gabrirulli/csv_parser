@@ -29,17 +29,25 @@ class CsvParser
   end
 
   ### It finds the highest city's altitude for each country
-  ### It prints the output in stdout and writes it in a file
   def highests
+    results = []
+    grouped_by_nation.each do |k, v|
+      highest = v.max_by{|d| d.altitude }
+      results << highest
+    end
+    results.sort_by {|d| d.altitude}.reverse
+  end
+
+  ### It prints the results, sorted by altitude in descending order, in stdout and writes it in a file
+  def return_results
     open('output.txt', 'a') { |f|
-      grouped_by_nation.each do |k, v|
-        highest = v.max_by{|d| d.altitude }
-        f.puts "#{highest.altitude}m - #{highest.city}, #{highest.nation}\n"
-        puts "#{highest.altitude}m - #{highest.city}, #{highest.nation}"
+      highests.each do |result|
+        f.puts "#{result.altitude}m - #{result.city}, #{result.nation}\n"
+        puts "#{result.altitude}m - #{result.city}, #{result.nation}"
       end
     }
   end
 end
 
-countries = CsvParser.new.highests
+countries = CsvParser.new.return_results
 puts "Countries found: #{countries.count}"
